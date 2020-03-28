@@ -1,5 +1,5 @@
 
-# COVID-19 - Simple Data Explorer<
+# COVID-19 - Simple Data Explorer
 
 [https://b-ma.github.io/covid-19-data-explorer/](https://b-ma.github.io/covid-19-data-explorer/)
 
