@@ -44,7 +44,7 @@ const state = Object.assign({
       enabled: false,
     },
     {
-      value: 'confirmed - (recovered - deaths)',
+      value: 'confirmed - (recovered + deaths)',
       enabled: true,
     }
   ],
