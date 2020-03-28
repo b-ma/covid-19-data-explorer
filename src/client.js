@@ -194,7 +194,7 @@ function renderApp() {
 
   render(html`
     <div id="controls">
-      <h2>controls</h2>
+      <h2>> origin</h2>
       <div>
         <label class="large">
           <input
@@ -215,6 +215,7 @@ function renderApp() {
           align according to the # of days after ${numConfirmedCaseLimitForRelativeTime} confirmed cases
         </label>
       </div>
+      <h2>> formulas</h2>
       <p>
         > Create formulas to parse the data.<br />
         You can use the following variables:<br />
@@ -260,8 +261,8 @@ function renderApp() {
         <button class="large highlight" @click="${updateAllFormulas}">update</input>
       </div>
       <div>
-        <h2>select countries</h2>
-        <p>> selected countries:
+        <h2>> countries</h2>
+        <p>selected countries:<br />
           ${state.selectedCountries.join(', ')}
         </p>
         <div id="select-countries-container">
@@ -286,7 +287,7 @@ function renderApp() {
       <div id="chart"></div>
     </div>
     <div id="credits">
-      <h2>Credits</h2>
+      <h2>> Credits</h2>
       <ul>
         <li>
           Data are retrieved from <a target="_blank" href="https://github.com/pomber/covid19">https://github.com/pomber/covid19</a>,<br />
