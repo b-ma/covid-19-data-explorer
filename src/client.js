@@ -21,8 +21,9 @@ let geoPopulation;
 
 const storedState = JSON.parse(localStorage.getItem(localStorageKey));
 
-const state = storedState || {
+const state = Object.assign({
   version: 0,
+  logScale: false,
   selectedCountries: ['France', 'US', 'China'],
   timeOrigin: 'absolute', // use all data
   formulas: [
@@ -47,7 +48,7 @@ const state = storedState || {
       enabled: true,
     }
   ],
-};
+}, storedState);
 
 function saveState() {
   const json = JSON.stringify(state);
@@ -115,7 +116,22 @@ function toggleCountry(e) {
   renderChart();
 }
 
+function toggleLogScale(e) {
+  state.logScale = e.target.checked
+
+  saveState();
+  renderApp();
+  renderChart();
+}
+
 function renderChart() {
+  const layout = state.logScale ? {
+    yaxis: {
+      type: 'log',
+      autorange: true
+    }
+  } : {};
+
   if (state.selectedCountries.length) {
     const data = state.selectedCountries.map((country, index) => {
       const rawDataset = datasets[country];
@@ -179,10 +195,9 @@ function renderChart() {
 
     // flatten for Plotly
     const flatData = data.flat();
-    Plotly.newPlot('chart', flatData);
+    Plotly.newPlot('chart', flatData, layout);
   } else {
-    // xAxis = dataset.map(d => d.date);
-    Plotly.newPlot('chart', []);
+    Plotly.newPlot('chart', [], layout);
   }
 
 
@@ -195,26 +210,25 @@ function renderApp() {
   render(html`
     <div id="controls">
       <h2>> origin</h2>
-      <div>
-        <label class="large">
-          <input
-            type="radio"
-            name="timeOrigin"
-            .checked="${state.timeOrigin === 'absolute'}"
-            @click=${setTimeOrigin}
-            value="absolute">
-          align according to the date
-        </label>
-        <label class="large">
-          <input
-            type="radio"
-            name="timeOrigin"
-            .checked="${state.timeOrigin === 'relative'}"
-            @click=${setTimeOrigin}
-            value="relative">
-          align according to the # of days after ${numConfirmedCaseLimitForRelativeTime} confirmed cases
-        </label>
-      </div>
+      <label class="large">
+        <input
+          type="radio"
+          name="timeOrigin"
+          .checked="${state.timeOrigin === 'absolute'}"
+          @click=${setTimeOrigin}
+          value="absolute">
+        align according to the date
+      </label>
+      <label class="large">
+        <input
+          type="radio"
+          name="timeOrigin"
+          .checked="${state.timeOrigin === 'relative'}"
+          @click=${setTimeOrigin}
+          value="relative">
+        align according to the # of days after ${numConfirmedCaseLimitForRelativeTime} confirmed cases
+      </label>
+
       <h2>> formulas</h2>
       <p>
         > Create formulas to parse the data.<br />
@@ -228,58 +242,65 @@ function renderApp() {
           <li>recoveredRate</li>
         </ul>
       </p>
-      <div id="formulas">
-        ${state.formulas.map((formula, index) => {
-          return html`
-            <div>
-              <form
-                data-index="${index}"
-                @submit="${e => e.preventDefault()}"
-              >
+      ${state.formulas.map((formula, index) => {
+        return html`
+          <div>
+            <form
+              data-index="${index}"
+              @submit="${e => e.preventDefault()}"
+            >
+              <input
+                name="value"
+                type="text"
+                value="${formula.value}" />
+              <br />
+              <label>
                 <input
-                  name="value"
-                  type="text"
-                  value="${formula.value}" />
-                <br />
-                <label>
-                  <input
-                    name="enabled"
-                    type="checkbox"
-                    .checked="${formula.enabled}" />
-                  enabled
-                </label>
-                <button
-                  value="delete"
-                  @click="${e => { e.preventDefault(); e.stopPropagation(); deleteFormula(index); } }"
-                >delete</button>
-              </form>
-            </div>
-          `;
-        })}
-        <br />
-        <button @click="${addFomula}">add formula</button>
-        <button class="large highlight" @click="${updateAllFormulas}">update</input>
-      </div>
-      <div>
-        <h2>> countries</h2>
-        <p>selected countries:<br />
-          ${state.selectedCountries.join(', ')}
-        </p>
-        <div id="select-countries-container">
-          ${Object.keys(datasets).map(country => {
-            return html`
-              <label class="large">
-                <input
+                  name="enabled"
                   type="checkbox"
-                  .checked="${state.selectedCountries.indexOf(country) !== -1}"
-                  value="${country}"
-                  @change=${toggleCountry}
-                />
-                ${country}
+                  .checked="${formula.enabled}" />
+                enabled
               </label>
-            `
-          })}
-        </div>
+              <button
+                value="delete"
+                @click="${e => { e.preventDefault(); e.stopPropagation(); deleteFormula(index); } }"
+              >delete</button>
+            </form>
+          </div>
+        `;
+      })}
+      <br />
+      <button @click="${addFomula}">add formula</button>
+      <button class="large highlight" @click="${updateAllFormulas}">update</button>
+
+      <h2>> misc</h2>
+      <label>
+        <input
+          name="logScale"
+          type="checkbox"
+          .checked="${state.logScale}"
+          @change="${toggleLogScale}" />
+        log scale
+      </label>
+
+      <h2>> countries</h2>
+      <p>selected countries:<br />
+        ${state.selectedCountries.join(', ')}
+      </p>
+      <div id="select-countries-container">
+        ${Object.keys(datasets).map(country => {
+          return html`
+            <label class="large">
+              <input
+                type="checkbox"
+                .checked="${state.selectedCountries.indexOf(country) !== -1}"
+                value="${country}"
+                @change=${toggleCountry}
+              />
+              ${country}
+            </label>
+          `
+        })}
       </div>
     </div>
     <div id="chart-container">
