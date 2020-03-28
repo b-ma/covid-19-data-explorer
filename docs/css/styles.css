@@ -48,6 +48,10 @@ html, body, #container, #loader {
   margin: 0;
 }
 
+#credits h4 {
+  margin: 0;
+}
+
 #chart-container {
   margin-right: 300px;
 }

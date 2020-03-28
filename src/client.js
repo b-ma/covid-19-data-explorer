@@ -287,7 +287,7 @@ function renderApp() {
       <div id="chart"></div>
     </div>
     <div id="credits">
-      <h2>> Credits</h2>
+      <h4>> Credits / Links</h4>
       <ul>
         <li>
           Data are retrieved from <a target="_blank" href="https://github.com/pomber/covid19">https://github.com/pomber/covid19</a>,<br />
@@ -296,6 +296,10 @@ function renderApp() {
         <li>
           Charts are created using <a target="_blank" href="https://plotly.com/">https://plotly.com/</a>.
         </li>
+        <li>
+          Github: <a href="https://github.com//b-ma/covid-19-data-explorer/">https://github.com//b-ma/covid-19-data-explorer/</a>
+        </li>
+      </ul>
     </div>
   `, document.querySelector('#container'));
 }
