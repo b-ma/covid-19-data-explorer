@@ -98,7 +98,6 @@ input[type=text] {
   width: 98%;
   height: 24px;
   line-height: 24px;
-  padding: 0 4px;
 }
 
 .highlight {
@@ -113,4 +112,5 @@ input[type=text] {
   background-color: white;
   border: 1px solid grey;
   border-radius: 2px;
+  padding-left: 6px;
 }

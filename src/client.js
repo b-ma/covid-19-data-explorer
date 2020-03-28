@@ -209,7 +209,7 @@ function renderApp() {
 
   render(html`
     <div id="controls">
-      <h2>> origin</h2>
+      <h2>> controls</h2>
       <label class="large">
         <input
           type="radio"
@@ -227,6 +227,14 @@ function renderApp() {
           @click=${setTimeOrigin}
           value="relative">
         align according to the # of days after ${numConfirmedCaseLimitForRelativeTime} confirmed cases
+      </label>
+      <label>
+        <input
+          name="logScale"
+          type="checkbox"
+          .checked="${state.logScale}"
+          @change="${toggleLogScale}" />
+        log scale
       </label>
 
       <h2>> formulas</h2>
@@ -272,16 +280,6 @@ function renderApp() {
       <br />
       <button @click="${addFomula}">add formula</button>
       <button class="large highlight" @click="${updateAllFormulas}">update</button>
-
-      <h2>> misc</h2>
-      <label>
-        <input
-          name="logScale"
-          type="checkbox"
-          .checked="${state.logScale}"
-          @change="${toggleLogScale}" />
-        log scale
-      </label>
 
       <h2>> countries</h2>
       <p>selected countries:<br />
