@@ -269,11 +269,11 @@ function renderApp() {
                   .checked="${formula.enabled}" />
                 enabled
               </label>
-              <button
-                value="delete"
-                @click="${e => { e.preventDefault(); e.stopPropagation(); deleteFormula(index); } }"
-              >delete</button>
             </form>
+            <button
+              value="delete"
+              @click="${e => { e.preventDefault(); e.stopPropagation(); deleteFormula(index); } }"
+            >delete</button>
           </div>
         `;
       })}
