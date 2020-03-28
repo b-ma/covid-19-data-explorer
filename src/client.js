@@ -126,8 +126,8 @@ function renderChart() {
         dataset = rawDataset;
         xAxis = dataset.map(d => d.date);
       } else if (state.timeOrigin === 'relative') {
-        dataset = rawDataset.filter(d => d.relativeDaysAfter200Confirmed !== undefined);
-        xAxis = dataset.map(d => d.relativeDaysAfter200Confirmed);
+        dataset = rawDataset.filter(d => d.relativeDaysAfterNConfirmed !== undefined);
+        xAxis = dataset.map(d => d.relativeDaysAfterNConfirmed);
       }
 
       const activeFormulas = state.formulas.filter(formula => formula.enabled && formula.value);
@@ -326,22 +326,22 @@ async function init() {
     dataset[0].deathsRate = 0;
     dataset[0].recoveredRate = 0;
 
-    let confirmed200Index = dataset[0].confirmed >= numConfirmedCaseLimitForRelativeTime ? 0 : null;
+    let nConfirmedIndex = dataset[0].confirmed >= numConfirmedCaseLimitForRelativeTime ? 0 : null;
 
     for (let i = 1; i < dataset.length; i++) {
       const prev = dataset[i - 1];
       const current = dataset[i];
 
-      if (confirmed200Index === null && current.confirmed >= numConfirmedCaseLimitForRelativeTime) {
-        confirmed200Index = i;
+      if (nConfirmedIndex === null && current.confirmed >= numConfirmedCaseLimitForRelativeTime) {
+        nConfirmedIndex = i;
       }
 
       current.confirmedRate = current.confirmed - prev.confirmed;
       current.deathsRate = current.deaths - prev.deaths;
       current.recoveredRate = current.recovered - prev.recovered;
 
-      if (confirmed200Index !== null) {
-        current.relativeDaysAfter200Confirmed = i - confirmed200Index;
+      if (nConfirmedIndex !== null) {
+        current.relativeDaysAfterNConfirmed = i - nConfirmedIndex;
       }
     }
   }
