@@ -286,6 +286,7 @@ function renderApp() {
       <div id="chart"></div>
     </div>
     <div id="credits">
+      <h2>Credits</h2>
       <ul>
         <li>
           Data are retrieved from <a target="_blank" href="https://github.com/pomber/covid19">https://github.com/pomber/covid19</a>,<br />
